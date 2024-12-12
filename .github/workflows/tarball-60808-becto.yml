@@ -25,15 +25,22 @@ jobs:
           dpkg -l
         shell: zsh {0}
 
-      - uses: actions/checkout@v4
-        with:
-          repository: 'becto-fli4l/fli4l-60808-orig'
-          ref: 'trunk'
-          path: 'fli4l-60808-orig'
-          lfs: 'true'
-          sparse-checkout: |
-            bin
+      #- uses: actions/checkout@v4
+      #  with:
+      #    repository: 'becto-fli4l/fli4l-60808-orig'
+      #    ref: 'trunk'
+      #    path: 'fli4l-60808-orig'
+      #    lfs: 'true'
+      #    sparse-checkout: |
+      #      bin
 
+      - name: 'get bin/x86_64 from original repo'
+        run: |
+          cd ${{ github.workspace }}
+          mkdir ./bin && cd ./bin
+          svn checkout -r60808 https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64
+        shell: zsh {0}
+        
       - uses: actions/checkout@v4
         with:
           repository: 'becto-fli4l/fli4l-60808-becto'
