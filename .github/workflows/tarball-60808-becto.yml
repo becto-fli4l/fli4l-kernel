@@ -32,8 +32,8 @@ jobs:
         run: |
           # cd ${{ github.workspace }}
           # dpkg -l
-          echo "TAG_TIME=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-          echo "BUILD_TIME=$(date +'%Y-%m-%d/%T')" >> $GITHUB_ENV
+          echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +'%Y.%m.%d-%T')" >> $GITHUB_ENV
         shell: zsh {0}
 
       #- uses: actions/checkout@v4
