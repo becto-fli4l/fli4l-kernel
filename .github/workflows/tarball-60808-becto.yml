@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: 'Install zsh'
+        run: sudo apt-get update; sudo apt-get install zsh
+
       - name: 'prepare/check github-runner -> environment'
         run: |
           cd ${{ github.workspace }}
