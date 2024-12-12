@@ -63,3 +63,9 @@ jobs:
         env:
           DEPLOY_ENV: ${{ github.event.inputs.environment }}
         shell: zsh {0}
+
+      - name: 'prepare/check github-runner -> show workspace'
+        run: |
+          cd ${{ github.workspace }}
+          tree -x -L 3
+        shell: zsh {0}
