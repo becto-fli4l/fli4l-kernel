@@ -29,6 +29,7 @@ jobs:
         with:
           repository: 'becto-fli4l/fli4l-60808-becto'
           ref: 'trunk'
+          path: 'fli4l-60808-becto'
 
       - name: 'prepare/check github-runner -> show workspace'
         run: |
