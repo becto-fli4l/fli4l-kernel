@@ -22,11 +22,17 @@ jobs:
       - name: 'install subversion'
         run: sudo apt-get update; sudo apt-get install subversion
 
-      - name: 'prepare/check github-runner -> environment'
-        run: |
-          cd ${{ github.workspace }}
-          dpkg -l
-        shell: zsh {0}
+      - name: 'install texlive'
+        run: sudo apt-get update; sudo apt-get install texlive-latex-base texlive-font-utils texlive-fonts-recommended texlive-fonts-extra lmodern
+
+      - name: 'install texlive / utils'
+        run: sudo apt-get update; sudo apt-get install fig2dev latex2html
+
+      #- name: 'prepare/check github-runner -> environment'
+      #  run: |
+      #    cd ${{ github.workspace }}
+      #    dpkg -l
+      #  shell: zsh {0}
 
       #- uses: actions/checkout@v4
       #  with:
