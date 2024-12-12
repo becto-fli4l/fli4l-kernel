@@ -28,11 +28,13 @@ jobs:
       - name: 'install texlive / utils'
         run: sudo apt-get update; sudo apt-get install fig2dev latex2html
 
-      #- name: 'prepare/check github-runner -> environment'
-      #  run: |
-      #    cd ${{ github.workspace }}
-      #    dpkg -l
-      #  shell: zsh {0}
+      - name: 'prepare/check github-runner -> environment'
+        run: |
+          # cd ${{ github.workspace }}
+          # dpkg -l
+          echo "TAG_TIME=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +'%Y-%m-%d/%T')" >> $GITHUB_ENV
+        shell: zsh {0}
 
       #- uses: actions/checkout@v4
       #  with:
@@ -56,16 +58,16 @@ jobs:
           ref: 'trunk'
           path: 'fli4l-60808-becto'
 
-      - name: 'prepare/check github-runner -> show workspace'
-        run: |
-          cd ${{ github.workspace }}
-          tree -x -L 3
-        shell: zsh {0}
+      #- name: 'prepare/check github-runner -> show workspace'
+      #  run: |
+      #    cd ${{ github.workspace }}
+      #    tree -x -L 3
+      #  shell: zsh {0}
 
       - name: 'create fli4l-60808-becto'
         run: |
           cd ${{ github.workspace }}
-          cd ./fli4l-60808-becto && ./_mkfli4lgit.sh ./${{ github.event.inputs.environment }} && cat *.log
+          cd ./fli4l-60808-becto && ./_mkfli4lgit.sh ./${{ github.event.inputs.environment }}
         env:
           DEPLOY_ENV: ${{ github.event.inputs.environment }}
         shell: zsh {0}
@@ -75,3 +77,13 @@ jobs:
           cd ${{ runner.home }}
           tree -x -L 5
         shell: zsh {0}
+        
+      - name: 'create tarball-60808-becto /release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG"_"$TAG_TIME" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="$TAG+$BUILD_TIME" \
+        shell: bash
