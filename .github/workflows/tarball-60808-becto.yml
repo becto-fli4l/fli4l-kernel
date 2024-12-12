@@ -16,8 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: 'Install zsh'
+      - name: 'install zsh'
         run: sudo apt-get update; sudo apt-get install zsh
+
+      - name: 'install subversion'
+        run: sudo apt-get update; sudo apt-get install subversion
 
       - name: 'prepare/check github-runner -> environment'
         run: |
