@@ -27,6 +27,15 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
+          repository: 'becto-fli4l/fli4l-60808-orig'
+          ref: 'trunk'
+          path: 'fli4l-60808-orig'
+          lfs: 'true'
+          sparse-checkout: |
+            bin
+
+      - uses: actions/checkout@v4
+        with:
           repository: 'becto-fli4l/fli4l-60808-becto'
           ref: 'trunk'
           path: 'fli4l-60808-becto'
