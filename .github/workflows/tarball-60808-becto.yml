@@ -86,5 +86,5 @@ jobs:
           gh release create "$TAG"_"$TAG_TIME" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
-              --notes="changelog/notes -> https://becto-fli4l.github.io"
+              --notes="- changelog/notes -> https://becto-fli4l.github.io"
         shell: bash
