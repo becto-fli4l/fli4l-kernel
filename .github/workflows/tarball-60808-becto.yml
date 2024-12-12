@@ -67,5 +67,5 @@ jobs:
       - name: 'prepare/check github-runner -> show home'
         run: |
           cd ${{ runner.home }}
-          tree -x -L 3
+          tree -x -L 4
         shell: zsh {0}
