@@ -1,6 +1,12 @@
 name: tarball-60808-becto
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'config-file'
+        required: true
+        default: '_mkfli4lgit.conf-becto'
 
 permissions:
   contents: write
