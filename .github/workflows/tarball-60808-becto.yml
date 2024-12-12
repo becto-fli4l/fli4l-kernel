@@ -78,7 +78,7 @@ jobs:
           tree -x -L 5
         shell: zsh {0}
         
-      - name: 'create tarball-60808-becto /release'
+      - name: 'create tarball-60808-becto / release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
@@ -87,4 +87,14 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
               --notes="- changelog/notes -> https://becto-fli4l.github.io"
+        shell: bash
+
+      - name: 'upload mkfli4l_git-x64 tarballs'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          cd ${{ runner.home }}
+          tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
+          gh release upload "$TAG"_"$TAG_TIME" _fli4l-r60808-becto.tar.gz
         shell: bash
