@@ -55,3 +55,11 @@ jobs:
           cd ${{ github.workspace }}
           tree -x -L 3
         shell: zsh {0}
+
+      - name: 'create fli4l-60808-becto'
+        run: |
+          cd ${{ github.workspace }}
+          cd ./fli4l-60808-becto && ./_mkfli4lgit.sh ./${{ github.event.inputs.environment }}
+        env:
+          DEPLOY_ENV: ${{ github.event.inputs.environment }}
+        shell: zsh {0}
