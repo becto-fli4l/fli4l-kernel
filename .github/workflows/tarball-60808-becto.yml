@@ -34,5 +34,5 @@ jobs:
       - name: 'prepare/check github-runner -> show workspace'
         run: |
           cd ${{ github.workspace }}
-          tree -a -x
+          tree -x -L 2
         shell: zsh {0}
