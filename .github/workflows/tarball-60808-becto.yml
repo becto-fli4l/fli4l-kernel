@@ -72,6 +72,11 @@ jobs:
           DEPLOY_ENV: ${{ github.event.inputs.environment }}
         shell: zsh {0}
 
+      - name: 'create fli4l-60808-becto tarball'
+        run: |
+          cd ${{ runner.home }} && tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
+        shell: zsh {0}
+        
       - name: 'prepare/check github-runner -> show home'
         run: |
           cd ${{ runner.home }}
@@ -80,7 +85,8 @@ jobs:
 
       - name: 'move build from runner.home -> github.workspace'
         run: |
-          mv ${{ runner.home }}/fli4l-* ${{ github.workspace }}/fli4l-60808-becto/
+          cd ${{ runner.home }} && 
+          # mv ${{ runner.home }}/fli4l-* ${{ github.workspace }}/fli4l-60808-becto/
           tree -x -L 5
         shell: zsh {0}
         
