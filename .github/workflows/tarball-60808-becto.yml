@@ -1,0 +1,28 @@
+name: tarball-60808-becto
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  tarball-60808-becto:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 'prepare/check github-runner -> environment'
+        run: |
+          cd ${{ github.workspace }}
+          dpkg -l
+        shell: zsh
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 'becto-fli4l/fli4l-60808-becto'
+          ref: 'trunk'
+
+      - name: 'prepare/check github-runner -> show workspace'
+        run: |
+          cd ${{ github.workspace }}
+          tree -a -x
+        shell: zsh
