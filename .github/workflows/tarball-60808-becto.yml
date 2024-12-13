@@ -76,7 +76,19 @@ jobs:
         run: |
           cd ${{ runner.home }} && tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
         shell: zsh {0}
-        
+
+      - name: 'display content from generated tarball'
+        run: |
+          tar -tf _fli4l-r60808-becto.tar.gz
+        shell: zsh {0}
+
+      - name: 'archive production artifacts'
+        uses: actions/upload-artifacts@v4
+        with:
+          name: _fli4l-r60808-becto.tar.gz
+          path: |
+            ${{ runner.home }}/_fli4l-r60808-becto.tar.gz
+
       - name: 'prepare/check github-runner -> show home'
         run: |
           cd ${{ runner.home }}
