@@ -16,14 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: 'install zsh'
+      - name: 'apt-get: install zsh'
         run: sudo apt-get update; sudo apt-get install zsh
-      - name: 'install subversion'
+      - name: 'apt-get: install subversion'
         run: sudo apt-get update; sudo apt-get install subversion
-      - name: 'install texlive'
+      - name: 'apt-get: install texlive'
         run: sudo apt-get update; sudo apt-get install texlive-latex-base texlive-font-utils texlive-fonts-recommended texlive-fonts-extra lmodern
-      - name: 'install texlive / utils'
+      - name: 'apt-get: install texlive / utils'
         run: sudo apt-get update; sudo apt-get install fig2dev latex2html
+      
       - name: 'prepare github-runner -> environment'
         run: |
           echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
@@ -71,11 +72,18 @@ jobs:
           name: _fli4l-r60808-becto.tar.gz
           path: |
             ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
-
-      - name: 'archive production artifacts -> doc'
+      
+      - name: 'archive production artifacts -> doc_en_html'
         uses: actions/upload-artifact@v4
         with:
-          name: _doc_english
+          name: _doc_en_html
+          path: |
+            ~/fli4l-*/doc/english/html
+  
+      - name: 'archive production artifacts -> doc_en_pdf'
+        uses: actions/upload-artifact@v4
+        with:
+          name: _doc_en_pdf
           path: |
             ~/fli4l-*/doc/english/pdf
         
@@ -88,5 +96,6 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
               --notes="- changelog/notes -> https://becto-fli4l.github.io" \
-              ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
+              ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
+              ~/fli4l-*/doc/english/pdf/base.pdf
         shell: bash
