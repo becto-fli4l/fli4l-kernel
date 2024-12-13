@@ -83,7 +83,7 @@ jobs:
         shell: zsh {0}
 
       - name: 'archive production artifacts'
-        uses: actions/upload-artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: _fli4l-r60808-becto.tar.gz
           path: |
