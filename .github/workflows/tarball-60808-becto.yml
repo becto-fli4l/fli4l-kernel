@@ -29,6 +29,7 @@ jobs:
         run: |
           echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
           echo "BUILD_TIME=$(date +'%Y.%m.%d-%T')" >> $GITHUB_ENV
+          echo "LINK_TO_RUNNER=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV
         shell: zsh {0}
 
       - name: 'get bin/x86_64 from https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64'
@@ -54,10 +55,10 @@ jobs:
           ref: 'trunk'
           path: 'fli4l-60808-becto'
       
-      - name: 'create diff -> *-orig/*/packages/base *-becto/*/packages/base directory'
+      - name: 'create diff -> *-orig/* *-becto/* directory'
         run: |
           cd ${{ github.workspace }}/fli4l-60808-becto
-          git diff 8823ebd8de904a7939f884be38ef1ca74038372e HEAD packages/base > _diff_base.diff
+          git show 6a0768a45 >> _diff_base.diff
           cat _diff_base.diff
       
       - name: 'create fli4l-60808-becto directory'
