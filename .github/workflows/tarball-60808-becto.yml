@@ -54,7 +54,7 @@ jobs:
           ref: 'trunk'
           path: 'fli4l-60808-becto'
 
-      - name: 'create header -> _changes.md:'
+      - name: 'create header -> release-file -> _changes.md:'
         run: |
           cd ${{ github.workspace }}
           echo "#### diff: *-orig / *-becto ####" >> _changes.md
@@ -62,14 +62,14 @@ jobs:
           echo "~~~" >> _changes.md
         shell: zsh {0}
       
-      - name: 'create diff: *-orig/* <-> *-becto/* directory'
+      - name: 'create diff for release-file and create patch files: *-orig/* <-> *-becto/*'
         run: |
           cd ${{ github.workspace }}
           diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff || true
           diff -rq ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md || true
         shell: zsh {0}
 
-      - name: 'create footer -> _changes.md:'
+      - name: 'create footer -> release-file -> _changes.md:'
         run: |
           cd ${{ github.workspace }}
           echo "~~~" >> _changes.md
