@@ -77,6 +77,11 @@ jobs:
           cd ${{ runner.home }} && tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
         shell: zsh {0}
 
+      - name: Echo home
+        run: | 
+          echo $HOME
+          echo ${{ runner.home }}
+    
       - name: 'display content from generated tarball'
         run: |
           tar -tf _fli4l-r60808-becto.tar.gz
