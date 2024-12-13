@@ -57,7 +57,7 @@ jobs:
       - name: 'create header -> _changes.md:'
         run: |
           cd ${{ github.workspace }}
-          echo "##diff: *-orig ./. *-becto##" >> _changes.md
+          echo "## diff: *-orig ./. *-becto ##" >> _changes.md
           echo >> _changes.md
           echo "~~~" >> _changes.md
         shell: zsh {0}
