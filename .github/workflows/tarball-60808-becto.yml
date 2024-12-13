@@ -53,7 +53,13 @@ jobs:
           repository: 'becto-fli4l/fli4l-60808-becto'
           ref: 'trunk'
           path: 'fli4l-60808-becto'
-
+      
+      - name: 'create diff -> fli4l-60808-orig/src/packages/base fli4l-60808-becto/src/packages/base directory'
+        run: |
+          cd ${{ github.workspace }}
+          diff -uNr ./fli4l-60808-orig/src/packages/base ./fli4l-60808-becto/packages/base > _diff_base.diff
+          cat _diff_base.diff
+      
       - name: 'create fli4l-60808-becto directory'
         run: |
           cd ${{ github.workspace }}
