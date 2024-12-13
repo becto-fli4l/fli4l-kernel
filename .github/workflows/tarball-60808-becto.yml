@@ -74,16 +74,13 @@ jobs:
 
       - name: 'create fli4l-60808-becto tarball'
         run: |
-          cd ${{ runner.home }} && tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
+          cd ${{ github.workspace }}
+          tar cfz _fli4l-r60808-becto.tar.gz ~/fli4l-*
         shell: zsh {0}
-
-      - name: Echo home
-        run: | 
-          echo $HOME
-          echo ${{ runner.home }}
     
       - name: 'display content from generated tarball'
         run: |
+          cd ${{ github.workspace }}
           tar -tf _fli4l-r60808-becto.tar.gz
         shell: zsh {0}
 
@@ -92,18 +89,11 @@ jobs:
         with:
           name: _fli4l-r60808-becto.tar.gz
           path: |
-            ${{ runner.home }}/_fli4l-r60808-becto.tar.gz
+            ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
 
       - name: 'prepare/check github-runner -> show home'
         run: |
           cd ${{ runner.home }}
-          tree -x -L 5
-        shell: zsh {0}
-
-      - name: 'move build from runner.home -> github.workspace'
-        run: |
-          cd ${{ runner.home }} && 
-          # mv ${{ runner.home }}/fli4l-* ${{ github.workspace }}/fli4l-60808-becto/
           tree -x -L 5
         shell: zsh {0}
         
@@ -124,6 +114,5 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           cd ${{ github.workspace }}
-          tar cfz _fli4l-r60808-becto.tar.gz fli4l-*
           gh release upload "$TAG"_"$TAG_TIME" _fli4l-r60808-becto.tar.gz
         shell: bash
