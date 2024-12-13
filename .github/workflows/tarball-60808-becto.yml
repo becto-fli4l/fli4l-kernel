@@ -66,7 +66,7 @@ jobs:
       - name: 'create diff: *-orig/* <-> *-becto/* directory'
         run: |
           cd ${{ github.workspace }}
-          diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md
+          diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff
         shell: zsh {0}
 
       - name: 'create footer -> _changes.md:'
