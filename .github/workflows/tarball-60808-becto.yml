@@ -98,5 +98,5 @@ jobs:
               --title="$TAG+$BUILD_TIME" \
               --notes="- changelog/notes -> https://becto-fli4l.github.io" \
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
-              ~/fli4l-*/doc/english/pdf/base.pdf#_doc_en_base.pdf
+              '~/fli4l-*/doc/english/pdf/base.pdf#_doc_en_base.pdf'
         shell: bash
