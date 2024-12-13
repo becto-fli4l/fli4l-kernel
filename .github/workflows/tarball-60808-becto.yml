@@ -119,7 +119,8 @@ jobs:
           gh release create "$TAG"_"$TAG_TIME" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
-              --notes-file="${{ github.workspace }}_changes.md" \
+              --notes-file="${{ github.workspace }}/_changes.md" \
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
+              ${{ github.workspace }}/_diff_base.diff \
               ~/fli4l-*/doc/english/pdf/*.pdf
         shell: bash
