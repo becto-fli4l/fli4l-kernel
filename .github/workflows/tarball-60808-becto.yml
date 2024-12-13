@@ -62,9 +62,11 @@ jobs:
           echo "~~~" >> _changes.md
         shell: zsh {0}
       
-      - name: 'create diff for release-file and create patch files: *-orig/* <-> *-becto/*'
+      - name: 'create diff for release-file and create patch files: *-orig/*/base <-> *-becto/*/base'
         run: |
           cd ${{ github.workspace }}
+          echo "base:" >> _changes.md
+          echo >> _changes.md
           diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff || true
           diff -rq ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md || true
         shell: zsh {0}
