@@ -38,6 +38,7 @@ jobs:
       #    lfs: 'true'
       #    sparse-checkout: |
       #      bin
+      
       - name: 'get bin/x86_64 from https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64'
         run: |
           cd ${{ github.workspace }}
@@ -76,7 +77,7 @@ jobs:
         with:
           name: _doc_english
           path: |
-            ~/_fli4l-*/doc
+            ~/fli4l-*/doc/english/pdf
         
       - name: 'create tarball-60808-becto / release'
         env:
