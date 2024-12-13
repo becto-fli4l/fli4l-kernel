@@ -57,8 +57,7 @@ jobs:
       - name: 'create header -> _changes.md:'
         run: |
           cd ${{ github.workspace }}
-          echo "diff: *-orig ./. *-becto" >> _changes.md
-          echo "========================" >> _changes.md
+          echo "##diff: *-orig ./. *-becto##" >> _changes.md
           echo >> _changes.md
           echo "~~~" >> _changes.md
         shell: zsh {0}
@@ -67,7 +66,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff || true
-          cat _diff_base.diff >> _changes.md
+          diff -rq ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md || true
         shell: zsh {0}
 
       - name: 'create footer -> _changes.md:'
