@@ -18,16 +18,12 @@ jobs:
 
       - name: 'install zsh'
         run: sudo apt-get update; sudo apt-get install zsh
-
       - name: 'install subversion'
         run: sudo apt-get update; sudo apt-get install subversion
-
       - name: 'install texlive'
         run: sudo apt-get update; sudo apt-get install texlive-latex-base texlive-font-utils texlive-fonts-recommended texlive-fonts-extra lmodern
-
       - name: 'install texlive / utils'
         run: sudo apt-get update; sudo apt-get install fig2dev latex2html
-
       - name: 'prepare github-runner -> environment'
         run: |
           echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
@@ -42,27 +38,20 @@ jobs:
       #    lfs: 'true'
       #    sparse-checkout: |
       #      bin
-
-      - name: 'get bin/x86_64 from original repo'
+      - name: 'get bin/x86_64 from https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64'
         run: |
           cd ${{ github.workspace }}
           mkdir ./bin && cd ./bin
           svn checkout -r60808 https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64
         shell: zsh {0}
-        
+
       - uses: actions/checkout@v4
         with:
           repository: 'becto-fli4l/fli4l-60808-becto'
           ref: 'trunk'
           path: 'fli4l-60808-becto'
 
-      #- name: 'prepare/check github-runner -> show workspace'
-      #  run: |
-      #    cd ${{ github.workspace }}
-      #    tree -x -L 3
-      #  shell: zsh {0}
-
-      - name: 'create fli4l-60808-becto'
+      - name: 'create fli4l-60808-becto directory'
         run: |
           cd ${{ github.workspace }}
           cd ./fli4l-60808-becto && ./_mkfli4lgit.sh ./${{ github.event.inputs.environment }}
@@ -73,28 +62,21 @@ jobs:
       - name: 'create fli4l-60808-becto tarball'
         run: |
            cd ~ && tar czf ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz fli4l-*
-          # tar cfz _fli4l-r60808-becto.tar.gz /home/runner/fli4l-*
-          # tar -C /home/runner/fli4l-* -cvzf _fli4l-r60808-becto.tar.gz fli4l-*
-        shell: zsh {0}
-    
-      - name: 'display content from generated tarball'
-        run: |
-          cd ${{ github.workspace }}
-          tar -tf _fli4l-r60808-becto.tar.gz
         shell: zsh {0}
 
-      - name: 'archive production artifacts'
+      - name: 'archive production artifacts -> fli4l-tarball'
         uses: actions/upload-artifact@v4
         with:
           name: _fli4l-r60808-becto.tar.gz
           path: |
             ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
 
-      - name: 'prepare/check github-runner -> show home'
-        run: |
-          cd ${{ runner.home }}
-          tree -x -L 5
-        shell: zsh {0}
+      - name: 'archive production artifacts -> doc'
+        uses: actions/upload-artifact@v4
+        with:
+          name: _doc_english
+          path: |
+            ~/_fli4l-*/doc
         
       - name: 'create tarball-60808-becto / release'
         env:
@@ -108,12 +90,6 @@ jobs:
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
         shell: bash
 
-      #- name: 'upload mkfli4l_git-x64 tarballs'
-      #  env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    TAG: ${{ github.ref_name }}
-      #  run: |
-      #    cd ${{ github.workspace }}
       #    gh release upload "$TAG"_"$TAG_TIME" _fli4l-r60808-becto.tar.gz
       #    gh release create v1.2.3 ./dist/*.tgz
       #  shell: bash
