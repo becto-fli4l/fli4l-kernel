@@ -28,10 +28,8 @@ jobs:
       - name: 'install texlive / utils'
         run: sudo apt-get update; sudo apt-get install fig2dev latex2html
 
-      - name: 'prepare/check github-runner -> environment'
+      - name: 'prepare github-runner -> environment'
         run: |
-          # cd ${{ github.workspace }}
-          # dpkg -l
           echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
           echo "BUILD_TIME=$(date +'%Y.%m.%d-%T')" >> $GITHUB_ENV
         shell: zsh {0}
@@ -74,9 +72,9 @@ jobs:
 
       - name: 'create fli4l-60808-becto tarball'
         run: |
-          # cd ${{ github.workspace }}
+           cd ~ && tar czf ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz fli4l-*
           # tar cfz _fli4l-r60808-becto.tar.gz /home/runner/fli4l-*
-          tar -C /home/runner/fli4l-* -cvzf _fli4l-r60808-becto.tar.gz fli4l-*
+          # tar -C /home/runner/fli4l-* -cvzf _fli4l-r60808-becto.tar.gz fli4l-*
         shell: zsh {0}
     
       - name: 'display content from generated tarball'
