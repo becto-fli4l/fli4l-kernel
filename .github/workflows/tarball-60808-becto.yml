@@ -57,7 +57,7 @@ jobs:
       - name: 'create diff -> *-orig/* *-becto/* directory'
         run: |
           cd ${{ github.workspace }}
-          diff -uNr ./fli4l-60808-becto/packages ./fli4l-60808-orig/src/packages
+          diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base
           tree -L 4
       
       - name: 'create fli4l-60808-becto directory'
