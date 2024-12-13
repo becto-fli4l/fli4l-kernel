@@ -104,14 +104,16 @@ jobs:
           gh release create "$TAG"_"$TAG_TIME" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
-              --notes="- changelog/notes -> https://becto-fli4l.github.io"
+              --notes="- changelog/notes -> https://becto-fli4l.github.io" \
+              ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz
         shell: bash
 
-      - name: 'upload mkfli4l_git-x64 tarballs'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.ref_name }}
-        run: |
-          cd ${{ github.workspace }}
-          gh release upload "$TAG"_"$TAG_TIME" _fli4l-r60808-becto.tar.gz
-        shell: bash
+      #- name: 'upload mkfli4l_git-x64 tarballs'
+      #  env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    TAG: ${{ github.ref_name }}
+      #  run: |
+      #    cd ${{ github.workspace }}
+      #    gh release upload "$TAG"_"$TAG_TIME" _fli4l-r60808-becto.tar.gz
+      #    gh release create v1.2.3 ./dist/*.tgz
+      #  shell: bash
