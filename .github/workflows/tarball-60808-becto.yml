@@ -53,13 +53,27 @@ jobs:
           repository: 'becto-fli4l/fli4l-60808-becto'
           ref: 'trunk'
           path: 'fli4l-60808-becto'
-      
-      - name: 'create diff -> *-orig/* *-becto/* directory'
+
+      - name: 'create header -> _changes.md:'
         run: |
           cd ${{ github.workspace }}
-          diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff
-          tree -L 4
-          cat _diff_base.diff
+          echo "diff: *-orig ./. *-becto" >> _changes.md
+          echo "========================" >> _changes.md
+          echo >> _changes.md
+          echo "~~~" >> _changes.md
+        shell: zsh {0}
+      
+      - name: 'create diff: *-orig/* <-> *-becto/* directory'
+        run: |
+          cd ${{ github.workspace }}
+          diff -uNr ./fli4l-60808-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md
+        shell: zsh {0}
+
+      - name: 'create footer -> _changes.md:'
+        run: |
+          cd ${{ github.workspace }}
+          echo "~~~" >> _changes.md
+          echo >> _changes.md
         shell: zsh {0}
       
       - name: 'create fli4l-60808-becto directory'
@@ -104,7 +118,7 @@ jobs:
           gh release create "$TAG"_"$TAG_TIME" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
-              --notes="- changelog/notes -> https://becto-fli4l.github.io / LINK_TO_RUNNER" \
+              --notes-file="${{ github.workspace }}_changes.md" \
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
               ~/fli4l-*/doc/english/pdf/*.pdf
         shell: bash
