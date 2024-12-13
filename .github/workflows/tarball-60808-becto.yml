@@ -74,8 +74,9 @@ jobs:
 
       - name: 'create fli4l-60808-becto tarball'
         run: |
-          cd ${{ github.workspace }}
-          tar cfz _fli4l-r60808-becto.tar.gz ~/fli4l-*
+          # cd ${{ github.workspace }}
+          # tar cfz _fli4l-r60808-becto.tar.gz /home/runner/fli4l-*
+          tar -C /home/runner/fli4l-* -cvzf _fli4l-r60808-becto.tar.gz fli4l-*
         shell: zsh {0}
     
       - name: 'display content from generated tarball'
