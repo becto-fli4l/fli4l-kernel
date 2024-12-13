@@ -57,9 +57,9 @@ jobs:
       
       - name: 'create diff -> *-orig/* *-becto/* directory'
         run: |
-          cd ${{ github.workspace }}/fli4l-60808-becto
-          git show 6a0768a45 >> _diff_base.diff
-          cat _diff_base.diff
+          cd ${{ github.workspace }}
+          diff -v
+          tree -L 4
       
       - name: 'create fli4l-60808-becto directory'
         run: |
@@ -95,7 +95,7 @@ jobs:
           path: |
             ~/fli4l-*/doc/english/pdf
         
-      - name: 'create tarball-60808-becto / release'
+      - name: 'create fli4l-60808-becto -> release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
@@ -103,7 +103,7 @@ jobs:
           gh release create "$TAG"_"$TAG_TIME" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
-              --notes="- changelog/notes -> https://becto-fli4l.github.io" \
+              --notes="- changelog/notes -> https://becto-fli4l.github.io / LINK_TO_RUNNER" \
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
               ~/fli4l-*/doc/english/pdf/*.pdf
         shell: bash
