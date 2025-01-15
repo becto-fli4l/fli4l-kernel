@@ -1,4 +1,4 @@
-## workflow-tarball-becto: tarball and doc builder for fli4l-4 / r60808 ##
+## workflow-tarball-becto: tarball and doc builder for fli4l-4 ##
 
 Environment:
 → kernel 5.4.213 / r60808 + patches
