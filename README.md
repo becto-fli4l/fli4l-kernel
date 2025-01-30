@@ -1,8 +1,8 @@
 ## workflow-tarball-becto: tarball and doc builder for fli4l-4 ##
 
-Environment:
+Build-Environment:
 
-→ kernel 5.4.213 / r60808 + patches
+→ kernel 5.4.213 / r60808 + patches: https://github.com/becto-fli4l/workflow-tarball-becto/blob/trunk/.github/workflows/tarball-60808-becto.yml
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
