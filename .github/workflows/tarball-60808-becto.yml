@@ -83,7 +83,7 @@ jobs:
         id: hash
         run:  |
           cd ${{ github.workspace }}
-          cd ./fli4l-60808-becto && echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+          cd ./fli4l-60808-becto && echo "git_hash=$(git rev-parse --short HEAD)" >> $GITHUB_HASH
 
       - name: display github-shortHash
         run: echo "${{ env.hash }}"
