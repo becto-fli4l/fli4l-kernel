@@ -79,14 +79,13 @@ jobs:
           echo >> _changes.md
         shell: zsh {0}
 
-      - name: get -> github-shortHash
-        id: hash
+      - name: get -> git-shortHash
         run:  |
           cd ${{ github.workspace }}
-          cd ./fli4l-60808-becto && echo "git_hash=$(git rev-parse --short HEAD)" >> $GITHUB_HASH
+          cd ./fli4l-60808-becto && echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: display github-shortHash
-        run: echo "${{ env.hash }}"
+      - name: display git-shortHash
+        run: echo "${{ env.sha_short }}"
       
       - name: 'create fli4l-60808-becto directory'
         run: |
