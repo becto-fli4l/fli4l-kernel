@@ -79,12 +79,12 @@ jobs:
           echo >> _changes.md
         shell: zsh {0}
 
-      - name: get -> git-shortHash
+      - name: get -> git-shortHash from fli4l-60808-becto
         run:  |
           cd ${{ github.workspace }}
           cd ./fli4l-60808-becto && echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: display git-shortHash
+      - name: display git-shortHash from fli4l-60808-becto
         run: echo "${{ env.sha_short }}"
       
       - name: 'create fli4l-60808-becto directory'
@@ -126,9 +126,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$TAG"_"$TAG_TIME"_"${{ env.hash }}" \
+          gh release create "$TAG"_"$TAG_TIME"_"${{ env.sha_short }}" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="$TAG+$BUILD_TIME" \
+              --title="$TAG+$BUILD_TIME-${{ env.sha_short }}" \
               --notes-file="${{ github.workspace }}/_changes.md" \
               ${{ github.workspace }}/_fli4l-r60808-becto.tar.gz \
               ${{ github.workspace }}/_diff_base.diff \
