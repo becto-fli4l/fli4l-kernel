@@ -10,3 +10,129 @@ on:
 
 permissions:
   contents: write
+
+jobs:
+  tarball-upstream-becto:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: 'apt-get: install zsh'
+        run: sudo apt-get update; sudo apt-get install zsh
+      - name: 'apt-get: install subversion'
+        run: sudo apt-get update; sudo apt-get install subversion
+      - name: 'apt-get: install texlive'
+        run: sudo apt-get update; sudo apt-get install texlive-latex-base texlive-font-utils texlive-fonts-recommended texlive-fonts-extra lmodern
+      - name: 'apt-get: install texlive / utils'
+        run: sudo apt-get update; sudo apt-get install fig2dev latex2html
+      
+      - name: 'prepare github-runner -> environment'
+        run: |
+          echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +'%Y.%m.%d-%T')" >> $GITHUB_ENV
+        shell: zsh {0}
+
+      - name: 'get bin/x86_64 from https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64'
+        run: |
+          cd ${{ github.workspace }}
+          mkdir ./bin && cd ./bin
+          svn checkout -r60808 https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64
+        shell: zsh {0}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 'becto-fli4l/fli4l-60808-orig'
+          ref: 'trunk'
+          path: 'fli4l-60808-orig'
+          lfs: 'true'
+          sparse-checkout: |
+            # bin
+            src
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 'becto-fli4l/fli4l-upstream-becto'
+          ref: 'trunk'
+          path: 'fli4l-upstream-becto'
+
+      - name: 'create header -> release-file -> _changes.md:'
+        run: |
+          cd ${{ github.workspace }}
+          echo "#### diff: fli4l-60808-orig / fli4l-upstream-becto ####" >> _changes.md
+          echo >> _changes.md
+          echo "~~~" >> _changes.md
+        shell: zsh {0}
+      
+      - name: 'create diff for release-file and create patch files: *-orig/*/base <-> *-becto/*/base'
+        run: |
+          cd ${{ github.workspace }}
+          echo "base:" >> _changes.md
+          echo >> _changes.md
+          diff -uNr ./fli4l-upstream-becto/packages/base ./fli4l-60808-orig/src/packages/base > _diff_base.diff || true
+          diff -rq ./fli4l-upstream-becto/packages/base ./fli4l-60808-orig/src/packages/base >> _changes.md || true
+        shell: zsh {0}
+
+      - name: 'create footer -> release-file -> _changes.md:'
+        run: |
+          cd ${{ github.workspace }}
+          echo "~~~" >> _changes.md
+          echo >> _changes.md
+        shell: zsh {0}
+
+      - name: get -> git-shortHash from fli4l-upstream-becto
+        run:  |
+          cd ${{ github.workspace }}
+          cd ./fli4l-upstream-becto && echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        shell: zsh {0}
+
+      - name: display git-shortHash from fli4l-upstream-becto
+        run: echo "${{ env.sha_short }}"
+        shell: zsh {0}
+      
+      - name: 'create fli4l-upstream-becto directory'
+        run: |
+          cd ${{ github.workspace }}
+          cd ./fli4l-upstream-becto && ./_mkfli4lgit.sh ./${{ github.event.inputs.environment }}
+        env:
+          DEPLOY_ENV: ${{ github.event.inputs.environment }}
+        shell: zsh {0}
+
+      - name: 'create fli4l-upstream-becto tarball'
+        run: |
+           cd ~ && tar czf ${{ github.workspace }}/_fli4l-upstream-${{ env.sha_short }}-becto.tar.gz fli4l-*
+        shell: zsh {0}
+
+      - name: 'archive production artifacts -> fli4l-tarball'
+        uses: actions/upload-artifact@v4
+        with:
+          name: _fli4l-upstream-${{ env.sha_short }}-becto.tar.gz
+          path: |
+            ${{ github.workspace }}/_fli4l-upstream-${{ env.sha_short }}-becto.tar.gz
+      
+      - name: 'archive production artifacts -> doc_en_html'
+        uses: actions/upload-artifact@v4
+        with:
+          name: _doc_en_html-${{ env.sha_short }}
+          path: |
+            ~/fli4l-*/doc/english/html
+  
+      - name: 'archive production artifacts -> doc_en_pdf'
+        uses: actions/upload-artifact@v4
+        with:
+          name: _doc_en_pdf-${{ env.sha_short }}
+          path: |
+            ~/fli4l-*/doc/english/pdf
+        
+      - name: 'create fli4l-upstream-becto -> release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG"_"$TAG_TIME"_"${{ env.sha_short }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="$TAG+$BUILD_TIME-${{ env.sha_short }}" \
+              --notes-file="${{ github.workspace }}/_changes.md" \
+              ${{ github.workspace }}/_fli4l-upstream-${{ env.sha_short }}-becto.tar.gz \
+              ${{ github.workspace }}/_diff_base.diff \
+              ~/fli4l-*/doc/english/pdf/*.pdf
+        shell: bash
