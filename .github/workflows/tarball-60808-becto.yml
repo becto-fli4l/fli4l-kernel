@@ -117,8 +117,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
+          short-HASH: ${{ env.GIT_HASH }}
         run: |
-          gh release create "$TAG"_"$TAG_TIME"_"$GIT_HASH" \
+          gh release create "$TAG"_"$TAG_TIME"_"$short-HASH" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
               --notes-file="${{ github.workspace }}/_changes.md" \
