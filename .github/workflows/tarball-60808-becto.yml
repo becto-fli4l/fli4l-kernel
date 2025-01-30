@@ -29,8 +29,14 @@ jobs:
         run: |
           echo "TAG_TIME=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
           echo "BUILD_TIME=$(date +'%Y.%m.%d-%T')" >> $GITHUB_ENV
-          echo "GIT_SHORT_HASH=$(git rev-parse --short '$GITHUB_SHA')" >> $GITHUB_ENV
         shell: zsh {0}
+
+      - name: get -> github-shortHash
+        id: hash
+        run: echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_HASH
+
+      - name: display github-shortHash
+        run: echo "${{ env.hash }}"
 
       - name: 'get bin/x86_64 from https://repo.nettworks.org/svn/fli4l/branches/4.0/trunk/bin/x86_64'
         run: |
@@ -118,7 +124,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$TAG"_"$TAG_TIME"_"$GIT_SHORT_HASH" \
+          gh release create "$TAG"_"$TAG_TIME"_"${{ env.hash }}" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$TAG+$BUILD_TIME" \
               --notes-file="${{ github.workspace }}/_changes.md" \
