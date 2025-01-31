@@ -104,13 +104,6 @@ jobs:
           name: _fli4l-upstream-${{ env.sha_short }}-becto.tar.gz
           path: |
             ${{ github.workspace }}/_fli4l-upstream-${{ env.sha_short }}-becto.tar.gz
-      
-      - name: 'archive production artifacts -> doc_en_html'
-        uses: actions/upload-artifact@v4
-        with:
-          name: _doc_en_html-${{ env.sha_short }}
-          path: |
-            ~/fli4l-*/doc/english/html
 
       - name: 'create fli4l-upstream-becto -> release'
         env:
