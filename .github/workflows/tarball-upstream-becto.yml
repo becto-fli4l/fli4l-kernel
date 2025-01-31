@@ -84,10 +84,6 @@ jobs:
           cd ${{ github.workspace }}
           cd ./fli4l-upstream-becto && echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         shell: zsh {0}
-
-      - name: display git-shortHash from fli4l-upstream-becto
-        run: echo "${{ env.sha_short }}"
-        shell: zsh {0}
       
       - name: 'create fli4l-upstream-becto directory'
         run: |
@@ -115,14 +111,7 @@ jobs:
           name: _doc_en_html-${{ env.sha_short }}
           path: |
             ~/fli4l-*/doc/english/html
-  
-      - name: 'archive production artifacts -> doc_en_pdf'
-        uses: actions/upload-artifact@v4
-        with:
-          name: _doc_en_pdf-${{ env.sha_short }}
-          path: |
-            ~/fli4l-*/doc/english/pdf
-        
+
       - name: 'create fli4l-upstream-becto -> release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
